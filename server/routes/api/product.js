@@ -362,7 +362,7 @@ router.put(
           .json({ error: 'Sku or slug is already in use.' });
       }
 
-      await Product.findOneAndUpdate(query, update, {
+      await Product.findOneAndUpdate(query, { $set: update }, {
         new: true
       });
 
@@ -388,7 +388,7 @@ router.put(
       const update = req.body.product;
       const query = { _id: productId };
 
-      await Product.findOneAndUpdate(query, update, {
+      await Product.findOneAndUpdate(query, { $set: update }, {
         new: true
       });
 
