@@ -8,13 +8,18 @@ const auth = require('../../middleware/auth');
 router.post('/', auth, async (req, res) => {
   try {
     const { product, isLiked } = req.body;
+    if (typeof product !== 'string' || typeof isLiked !== 'boolean') {
+      return res.status(400).json({
+        error: 'Invalid input data.'
+      });
+    }
     const user = req.user;
     const update = {
       product,
       isLiked,
       updated: Date.now()
     };
-    const query = { product: update.product, user: user._id };
+    const query = { product: { $eq: update.product }, user: user._id };
 
     const updatedWishlist = await Wishlist.findOneAndUpdate(query, update, {
       new: true
